@@ -28,13 +28,20 @@ from experiments import lending_plots
 import matplotlib.pyplot as plt
 import numpy as np
 import simplejson as json
+from rlhf_scripts.format_trajectories import format_txt_results
+from rlhf_scripts.train_reward_model import train_model
 
-flags.DEFINE_string('outfile', None, 'Path to write out results.')
+flags.DEFINE_string('outfile', "./data/sim_results.txt", 'Path to write out results.')
+flags.DEFINE_string('trajectory_file', "./data/trajectory_decisions.csv", 'Path to write out the formatted trajectories.')
+flags.DEFINE_string('reward_model_dir', "./models/", 'Directory to save models.')
 flags.DEFINE_string('plots_directory', None, 'Directory to write out plots.')
 flags.DEFINE_bool('equalize_opportunity', False,
                   'If true, apply equality of opportunity constraints.')
 flags.DEFINE_integer('num_steps', 10000,
                      'Number of steps to run the simulation.')
+flags.DEFINE_bool('reward_model', False,
+                  'If true, build a reward model with the trajectories'
+                  )
 
 FLAGS = flags.FLAGS
 
@@ -126,8 +133,11 @@ def main(argv):
 
   if FLAGS.outfile:
     with open(FLAGS.outfile, 'w') as f:
-      f.write(result)
+      f.write(str(result))
 
+  if FLAGS.reward_model:
+    format_txt_results(FLAGS.outfile, FLAGS.trajectory_file)
+    train_model(FLAGS.trajectory_file, FLAGS.reward_model_dir)
 
 if __name__ == '__main__':
   app.run(main)
