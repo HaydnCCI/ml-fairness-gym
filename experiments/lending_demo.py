@@ -33,7 +33,7 @@ from rlhf_scripts.train_reward_model import train_model
 
 flags.DEFINE_string('outfile', "./data/sim_results.txt", 'Path to write out results.')
 flags.DEFINE_string('trajectory_file', "./data/trajectory_decisions.csv", 'Path to write out the formatted trajectories.')
-flags.DEFINE_string('reward_model_dir', "./models/", 'Directory to save models.')
+flags.DEFINE_string('reward_model_path', "./models/EO_reward_model.pt", 'Directory to save models.')
 flags.DEFINE_string('plots_directory', None, 'Directory to write out plots.')
 flags.DEFINE_bool('equalize_opportunity', False,
                   'If true, apply equality of opportunity constraints.')
@@ -137,7 +137,7 @@ def main(argv):
 
   if FLAGS.reward_model:
     format_txt_results(FLAGS.outfile, FLAGS.trajectory_file)
-    train_model(FLAGS.trajectory_file, FLAGS.reward_model_dir)
+    train_model(FLAGS.trajectory_file, FLAGS.reward_model_path)
 
 if __name__ == '__main__':
   app.run(main)

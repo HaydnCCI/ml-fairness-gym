@@ -18,7 +18,7 @@ logging.basicConfig(
     datefmt="%I:%M:%S",
 )
 
-def train_model(trajectory_path, save_dir="./models/"):
+def train_model(trajectory_path, save_path="./models/reward_model.pt"):
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
     synthetic_decisions_dataframe = pd.read_csv(trajectory_path)
@@ -35,6 +35,6 @@ def train_model(trajectory_path, save_dir="./models/"):
         learning_rate=0.0001,
         num_epochs=50,
         batch_size=256,
-        save_dir=save_dir,
+        save_path=save_path,
     )
 

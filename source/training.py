@@ -16,8 +16,9 @@ def train_classification_model(
     learning_rate,
     num_epochs,
     batch_size,
-    save_dir,
+    save_path
 ):
+    save_dir = "/".join(save_path.split('/')[0])
     if not os.path.exists(save_dir):
         os.makedirs(save_dir)
 
@@ -46,7 +47,7 @@ def train_classification_model(
                 optimizer.step()
                 losses.append(loss.item())
                 batches.set_postfix({"loss": loss.item()})
-    torch.save(model, os.path.join(save_dir, model.name + ".pt"))
+    torch.save(model, save_path)
     return losses
 
 
@@ -58,8 +59,9 @@ def train_reward_model(
     learning_rate,
     num_epochs,
     batch_size,
-    save_dir,
+    save_path
 ):
+    save_dir = "/".join(save_path.split('/')[0])
     if not os.path.exists(save_dir):
         os.makedirs(save_dir)
 
@@ -114,5 +116,5 @@ def train_reward_model(
                 optimizer.step()
                 losses.append(loss.item())
                 batches.set_postfix({"loss": np.mean(losses)})
-    torch.save(model, os.path.join(save_dir, model.name + ".pt"))
+    torch.save(model, save_path)
     return losses
